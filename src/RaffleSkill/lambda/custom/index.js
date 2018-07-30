@@ -6,7 +6,7 @@ const Alexa = require('ask-sdk-core');
 
 function httpGet(callback) {
   var options = {
-    host: 'https://rafflleb2b-app.azurewebsites.net',
+    host: 'rafflleb2b-app.azurewebsites.net',
     path: '/Home/Raffle',
     method: 'GET',
   };
@@ -60,15 +60,19 @@ const RaffleIntentHandler = {
   handle(handlerInput) {
     var speechText = 'The winner is ';
 
+    console.log('RaffleIntentHandler Begin: ' + JSON.stringify(handlerInput));
+
     httpGet(result => {      
-      this.response.speak(speechText + result);
-      this.emit(':responseReady');
+      console.log('HttpGet End: ' + result);
+      speechText = speechText + result.name;
     });    
 
-    // return handlerInput.responseBuilder
-    // .speak(speechText)
-    // .withSimpleCard('Raffle', speechText)
-    // .getResponse();
+    console.log('RaffleIntentHandler End: ' + speechText);
+
+    return handlerInput.responseBuilder
+    .speak(speechText)
+    .withSimpleCard('Raffle', speechText)
+    .getResponse();
   },
 };
 
