@@ -1,0 +1,19 @@
+﻿@using RaffleWeb.Models
+@model Person
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div>
+    <br />
+    <form method="post" asp-controller="Home" asp-action="Post">
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+        <div class="form-group">
+            <label asp-for="Name"></label>
+            <input asp-for="Name" class="form-control" aria-describedby="nameHelp" placeholder="Enter your name" autocomplete="off">
+            <small id="nameHelp" class="form-text text-muted">Fill your name.</small>
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </form>
+</div>

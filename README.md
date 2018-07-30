@@ -1,0 +1,1 @@
+* [ASP.NET Core - Feature Slices for ASP.NET Core MVC](https://msdn.microsoft.com/en-us/magazine/mt763233.aspx?f=255&MSPPError=-2147217396)
