@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.ApplicationInsights.AspNetCore
+@inject JavaScriptSnippet snippet
+
+<!DOCTYPE html>
 <html>
 <head>
     <meta charset="utf-8" />
@@ -18,7 +21,7 @@
 </head>
 <body>
     <nav class="navbar navbar-inverse navbar-fixed-top">
-        <div class="container">            
+        <div class="container">
         </div>
     </nav>
     <div class="container body-content">
@@ -49,7 +52,7 @@
         </script>
         <script src="~/js/site.min.js" asp-append-version="true"></script>
     </environment>
-
+    @Html.Raw(snippet.FullScript)
     @RenderSection("Scripts", required: false)
 </body>
 </html>

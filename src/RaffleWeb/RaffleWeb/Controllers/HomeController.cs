@@ -1,5 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using RaffleWeb.Models;
 using System;
 using System.Diagnostics;
@@ -11,10 +13,12 @@ namespace RaffleWeb.Controllers
     public class HomeController : Controller
     {
         private readonly RaffleDbContext _raffleDbContext;
+        private readonly ILogger<HomeController> _logger;
 
-        public HomeController(RaffleDbContext raffleDbContext)
+        public HomeController(RaffleDbContext raffleDbContext, ILogger<HomeController> logger)
         {
             _raffleDbContext = raffleDbContext;
+            _logger = logger;
         }
 
         public IActionResult Index()
@@ -24,6 +28,9 @@ namespace RaffleWeb.Controllers
 
         public async Task<IActionResult> Post(Person person)
         {
+            _logger.LogInformation($"Request: {JsonConvert.SerializeObject(person)}.");
+            _logger.LogInformation($"ModelState: {JsonConvert.SerializeObject(ModelState)}.");
+
             if (ModelState.IsValid)
             {
                 if ((await _raffleDbContext.People.AnyAsync(p => p.Name == person.Name)))
@@ -46,6 +53,15 @@ namespace RaffleWeb.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        public async Task<Person> Raffle() => await _raffleDbContext.People.OrderBy(p => Guid.NewGuid()).FirstOrDefaultAsync();
+        public async Task<Person> Raffle()
+        {
+            _logger.LogInformation("Raffle Requested");
+
+            var result = await _raffleDbContext.People.OrderBy(p => Guid.NewGuid()).FirstOrDefaultAsync();
+
+            _logger.LogInformation($"Raffled: {JsonConvert.SerializeObject(result)}.");
+
+            return result;
+        }
     }
 }
