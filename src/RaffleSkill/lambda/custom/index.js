@@ -1,38 +1,8 @@
 /* eslint-disable  func-names */
 /* eslint-disable  no-console */
 
-const http = require('https');
+const request = require('sync-request');
 const Alexa = require('ask-sdk-core');
-
-function httpGet(callback) {
-  var options = {
-    host: 'rafflleb2b-app.azurewebsites.net',
-    path: '/Home/Raffle',
-    method: 'GET',
-  };
-
-  var req = http
-    .request(options, res => {
-      res.setEncoding('utf8');
-      var responseString = '';
-
-      //accept incoming data asynchronously
-      res.on('data', chunk => {
-        responseString = responseString + chunk;
-      });
-
-      //return the data when streaming is complete
-      res.on('end', () => {
-        console.log(responseString);
-        callback(responseString);
-      });
-    })
-    .on('error', err => {
-      console.log('Error: ' + err.message);
-    });
-
-  req.end();
-}
 
 const LaunchRequestHandler = {
   canHandle(handlerInput) {
@@ -62,17 +32,20 @@ const RaffleIntentHandler = {
 
     console.log('RaffleIntentHandler Begin: ' + JSON.stringify(handlerInput));
 
-    httpGet(result => {      
-      console.log('HttpGet End: ' + result);
-      speechText = speechText + result.name;
-    });    
+    var result = request('GET', 'https://rafflleb2b-app.azurewebsites.net/home/raffle');
+    
+    console.log('RaffleIntentHandler GET: ' + JSON.stringify(result));
+    
+    var body = JSON.parse(result.getBody());
+
+    speechText = speechText + body.name;
 
     console.log('RaffleIntentHandler End: ' + speechText);
 
     return handlerInput.responseBuilder
-    .speak(speechText)
-    .withSimpleCard('Raffle', speechText)
-    .getResponse();
+      .speak(speechText)
+      .withSimpleCard('Raffle', speechText)
+      .getResponse();
   },
 };
 
