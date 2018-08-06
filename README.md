@@ -1,8 +1,30 @@
 # Say "Hello" to Alexa!
 
-| The material utilized on Readify Back2Base talk about Alexa.
+| The material utilized on Readify Back2Base talk about Alexa on 03/08/18.
+
+## Goals
+I created a .NET Core Web Application (MVC) to store user names into an in-memory EntityFramework instance and available a random user name API to "rafle" an user. Thus, I could created an Alexa Skill (App) to Alexa recognize user voice commands and makes HTTP request throught raffle API.
 
 * [Download ReadifyB2B-Alexa.pptx](./ReadifyB2B-Alexa.pptx)
+
+## How to Start
+Clone the repository:
+```
+$ git clone https://github.com/giovanidecusati/readify-b2b-alexa.git
+```
+In the terminal access the directory (./src/raffleweb) and deploy your application on a public address to be accessed by Alexa Skill.
+
+Access Alexa Skill directory (./src/raffleskill) and connect to your Amazon Developer Account. You need to create [AWS account](https://console.aws.amazon.com) and [developer account](https://developer.amazon.com).
+```
+$ cd readify-b2b-alexa/src/RaffleSkill/
+$ ask init
+```
+Change API Url on file [lambda\custom\index.js](.src\RaffleSkill\lambda\custom\index.js) to match your API URL.
+
+Now you can deploy and test this skill on Amazon Developer Console.
+```
+$ ask deploy
+```
 
 ## References
 * [AWS Alexa Developer Console](https://developer.amazon.com/alexa/console/ask)
